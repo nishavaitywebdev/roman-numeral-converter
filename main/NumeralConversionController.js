@@ -23,7 +23,7 @@ const integerToRoman = (req, res) => {
 
 const checkIfValidInput = (numStr) => {
     const num = Number(numStr);
-    return !isNaN(num) && num >= 1 && num <= 3999;
+    return !isNaN(num) && Number.isInteger(num) && num >= 1 && num <= 3999;
 }
 
 const getFormattedResponse = (number, romanNumeral = getRomanEquivalent(number)) => {

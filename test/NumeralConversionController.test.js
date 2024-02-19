@@ -24,6 +24,13 @@ test('should return valid response for 9 as XI', () => {
     expect(expectedRomanValue).toEqual({"input": "9", "output": "IX"});
 });
 
+test('should return error response for decimal 0.9', () => {
+    const request = getHttpRequest("query=0.9");
+    integerToRoman(request, response);
+    const expectedValue = response._getData();
+    expect(expectedValue).toEqual({"message": "Error: Please provide a valid integer in the range 1 - 3999 as query."});
+});
+
 test('should return valid response for 3999', () => {
     const request = getHttpRequest("query=3999");
     integerToRoman(request, response);
@@ -31,29 +38,36 @@ test('should return valid response for 3999', () => {
     expect(expectedRomanValue).toEqual({"input": "3999", "output": "MMMCMXCIX"});
 });
 
-test('should return error mesaage for 4000', () => {
+test('should return error message for 4000', () => {
     const request = getHttpRequest("query=4000");
     integerToRoman(request, response);
     const expectedValue = response._getData();
     expect(expectedValue).toEqual({"message": "Error: Please provide a valid integer in the range 1 - 3999 as query."});
 });
 
-test('should return error mesaage for 0', () => {
+test('should return error message for 0', () => {
     const request = getHttpRequest("query=0");
     integerToRoman(request, response);
     const expectedValue = response._getData();
     expect(expectedValue).toEqual({"message": "Error: Please provide a valid integer in the range 1 - 3999 as query."});
 });
 
-test('should return error mesaage for "0"', () => {
+test('should return error message for "0"', () => {
     const request = getHttpRequest("query='0'");
     integerToRoman(request, response);
     const expectedValue = response._getData();
     expect(expectedValue).toEqual({"message": "Error: Please provide a valid integer in the range 1 - 3999 as query."});
 });
 
-test('should return error mesaage for range 100 - 0', () => {
+test('should return error message for range 100 - 0', () => {
     const request = getHttpRequest("min=100&max=0");
+    integerToRoman(request, response);
+    const expectedValue = response._getData();
+    expect(expectedValue).toEqual({"message": "Error: Please provide a valid min and max integer in the range 1 - 3999."});
+});
+
+test('should return error message for range 1.1 - 10', () => {
+    const request = getHttpRequest("min=1.1&max=10");
     integerToRoman(request, response);
     const expectedValue = response._getData();
     expect(expectedValue).toEqual({"message": "Error: Please provide a valid min and max integer in the range 1 - 3999."});
