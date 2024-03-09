@@ -75,18 +75,18 @@ async function integerToRomanRange(min, max) {
     };
 }
 
-const processRangeOfRomanNumerals = (min, max, res) => {
+const processRangeOfRomanNumerals = async (min, max, res) => {
     const isValidMin = checkIfValidInput(min);
     const isValidMax = checkIfValidInput(max);
     if (isValidMin && isValidMax && (min <= max)) {
-        integerToRomanRange(min, max).then(formattedResponse => {
+        try {
+            const formattedResponse = await integerToRomanRange(min, max);
             incrementSuccessfulRequest();
-            res.send(formattedResponse)
-        })
-            .catch(exception => {
-                // Splunk/Application Logging can be added here 
-                console.log(`Exception caught while processing ${"range  " + min + "-" + max}. Exception details ${exception}`);
-            });
+            res.send(formattedResponse);
+        } catch(exception) {
+            // Splunk/Application Logging can be added here 
+            console.log(`Exception caught while processing ${"range  " + min + "-" + max}. Exception details ${exception}`);
+        }
     } else {
         incrementErrorRequest();
         res.send({
